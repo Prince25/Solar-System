@@ -144,20 +144,20 @@ Implement the assignment in clean and understandable code. Each required part mu
 
 2. The first step is to add any new files into the repository so they can be tracked.
 
-   ```bash
-$ git add *
-```
+    ```bash
+      $ git add *
+      ```
 
 3. Then we commit any new and or changed files to the repository. The text after the -m is for you to describe what is included in this commit to the repository.
 
-   ```bash
-$ git commit -m "Description of what I did"
-```
+    ```bash
+      $ git commit -m "Description of what I did"
+      ```
 
 4. Finally, we need to push these changes up to our remote repository on GitHub. This is a very important step! Without it you are not copying your work back to GitHub and we will not be able to see it if you forget.
 
-   ```bash
-$ git push remote origin
-```
+    ```bash
+      $ git push remote origin
+      ```
 
 5. You can repeat these commands as often as you feel the need as your work on your assignment. However, again, you must always make a final push to GitHub when you are finished in order to submit your work. We will make a clone of all of the assignment repositories at the deadline. That implies two things. First, make your final push to GitHub ahead of time and second, any pushes you make after the deadline will not be seen by us.
