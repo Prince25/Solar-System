@@ -74,38 +74,62 @@ Now you must call this.attached() to assign to the camera matrix.  Only do the f
 
 ![image-5](docs/image-5.gif)
 
-### Extra Credit Part I
+#### Extra Credit Part I
 
-Instead of directly assigning desired to graphics_state.camera_transform, blend it with the existing camera matrix (from the previous frame) so that we smoothly pull the camera towards equaling desired instead of immediately getting there.  To mix two matrices, you can use desired.map( (x,i) => Vec.from( graphics_state.camera_transform[i] ).mix( x, blending_factor ) ) where .1 would make a good blending factor. **- 2 points.**
+Instead of directly assigning desired to `graphics_state.camera_transform`, blend it with the existing camera matrix (from the previous frame) so that we smoothly pull the camera towards equaling desired instead of immediately getting there.  To mix two matrices, you can use `desired.map( (x,i) => Vec.from( graphics_state.camera_transform[i] ).mix( x, blending_factor ) )` where .1 would make a good blending factor. **- 2 points.**
 
 At a blending speed of .1, you will still have some leeway to control the camera while attached (especially mouse steering), although it will tend to pull you back to viewing the selected planet.  As you press the buttons, see if you can notice any undesired effects of blending matrices this way to generate intermediate camera matrices -- a subtle problem can be seen because our code snippet above uses linear blending instead of quaternions.
 
-### Extra Credit Part II
+#### Extra Credit Part II
 
 Give your planet 3's ring a custom shader, drawing repeated faded bands on it like Saturn.  All you have to do is make sure it calculates color brightnesses in a way that varies sinusoidally with distance from the planet's center. **- 7 points.**
 
-The Ring_Shader class already partially implements such a custom shader.  It works with any Shape that has a positions field, and ignores all other fields.  Draw with this shader by using one of its materials (it generates blank ones, which is ok).  When used, it already passes in for the GPU to use the following values:  The shape positions, the model transform matrix, and the product of the projection and camera matrices.  These values are available in the shader's GLSL code.
+The `Ring_Shader` class already partially implements such a custom shader.  It works with any `Shape` that has a positions field, and ignores all other fields.  Draw with this shader by using one of its materials (it generates blank ones, which is ok).  When used, it already passes in for the GPU to use the following values:  The shape positions, the model transform matrix, and the product of the projection and camera matrices.  These values are available in the shader's GLSL code.
 
-Your task is to use those available variables to fill in the GLSL shader code (the JavaScript template strings returned by vertex_glsl_code() and fragment_glsl_code()).  Specifically, the void main() is blank for both the vertex and fragment shader programs; fill these in to cause the GPU to store within the special GPU address called gl_Position the correct final resting place of the vertex, and store into gl_FragColor the correct final color.
+Your task is to use those available variables to fill in the GLSL shader code (the JavaScript template strings returned by `vertex_glsl_code()` and `fragment_glsl_code()`).  Specifically, the `void main()` is blank for both the vertex and fragment shader programs; fill these in to cause the GPU to store within the special GPU address called `gl_Position` the correct final resting place of the vertex, and store into `gl_FragColor` the correct final color.
 
-For testing, you can try storing simple placeholder values into those special variables -- such as the original model space position value, converted from a vec3 to a vec4 like this: vec4( object_space_pos, 1).
+For testing, you can try storing simple placeholder values into those special variables -- such as the original model space position value, converted from a `vec3` to a `vec4` like this: `vec4( object_space_pos, 1)`.
 
-To color the ring use the color of planet 3, multiplied by some sinusoidal scalar function of your distance calculation, so that the color fades over distance from the center.  Use the GLSL distance() function to compute distance.  Both position and center are variables that you should calculate and store within the vertex shader; because we declared them as varying, they will be passed on to the fragment shader and available there.
+To color the ring use the color of planet 3, multiplied by some sinusoidal scalar function of your distance calculation, so that the color fades over distance from the center.  Use the GLSL `distance()` function to compute distance.  Both position and center are variables that you should calculate and store within the vertex shader; because we declared them as varying, they will be passed on to the fragment shader and available there.
 
 The ring color need not be affected by lights (the sun's size), since it is using a simple shader that is not aware of lights.
 
 ![image-6](docs/image-6.gif)
 
-### Extra Credit Part III
+#### Extra Credit Part III
 
-Create a fifth planet farthest from the sun.  Make it light gray with full specular and diffuse.  Instead of using subdivisions to make this sphere, modify the given Torus class to instead make a sphere, one that has a different layout from a subdivision sphere.  Instead of being made of evenly sized triangles, yours will have latitude and longitude lines (a grid).  To make a sphere out of a grid, use a similar technique as the Torus -- copy the code of Torus class and make your own variation of it.
+Create a fifth planet farthest from the sun.  Make it light gray with full specular and diffuse.  Instead of using subdivisions to make this sphere, modify the given `Torus` class to instead make a sphere, one that has a different layout from a subdivision sphere.  Instead of being made of evenly sized triangles, yours will have latitude and longitude lines (a grid).  To make a sphere out of a grid, use a similar technique as the `Torus` -- copy the code of `Torus` class and make your own variation of it.
 
-The Torus class makes a donut shape out of a triangulated grid of squares, with rows and columns.  Its code starts with an array of points describing a circle that's offset sideways from the origin.  Using those circle points for the grid's rows, it sweeps the whole circle around the origin to make the closed donut shape, with each point along the sweep being a different column of the grid.
+The `Torus` class makes a donut shape out of a triangulated grid of squares, with rows and columns.  Its code starts with an array of points describing a circle that's offset sideways from the origin.  Using those circle points for the grid's rows, it sweeps the whole circle around the origin to make the closed donut shape, with each point along the sweep being a different column of the grid.
 
-The tiny class Surface_Of_Revolution is for taking any curve or closed polygon and sweeping it around the Z axis to generate a surface of revolution (see the Wikipedia article about those).  It uses the assistance of the small Grid_Patch class we added to your template as well, and it's a more general shape building tool that allows operations that distort sheets of rows and columns.
+The tiny class `Surface_Of_Revolution` is for taking any curve or closed polygon and sweeping it around the Z axis to generate a surface of revolution (see the Wikipedia article about those).  It uses the assistance of the small `Grid_Patch` class we added to your template as well, and it's a more general shape building tool that allows operations that distort sheets of rows and columns.
 
-Use the insert_transformed_copy_into() method of Surface_Of_Revolution to automatically insert a revolution surface shape into your shape's arrays.  Pass in the desired grid rows and columns and your (semi-)circle array, just as class Torus did, and they will be used to construct the Surface_Of_Revolution.
+Use the `insert_transformed_copy_into()` method of `Surface_Of_Revolution` to automatically insert a revolution surface shape into your shape's arrays.  Pass in the desired grid rows and columns and your (semi-)circle array, just as class Torus did, and they will be used to construct the `Surface_Of_Revolution`.
 
-With the right modification, make code like what's in the Torus class to spin a half circle around the origin instead, sweeping it around the Z axis to make a sphere (make sure you also move the half circle close enough to touch the Z axis).  Draw planet 5 using this closed grid-based sphere. **- 6 points.**
+With the right modification, make code like what's in the `Torus` class to spin a half circle around the origin instead, sweeping it around the Z axis to make a sphere (make sure you also move the half circle close enough to touch the Z axis).  Draw planet 5 using this closed grid-based sphere. **- 6 points.**
 
 ![image-7](docs/image-7.gif)
+
+### Submitting Assignment 1 on GitHub:
+
+1. Once you are finished working it is time to 'commit' your work to your remote respository on GitHub. You will also want to do this periodically while you are working to make a backup of your work and to make your final submission. We will keep the process very simple by just 'committing' the master branch of your local repository into the remote repository on GitHub.
+
+2. The first step is to add any new files into the respository so they can be tracked.
+
+```bash
+$ git add *
+```
+
+3. Then we commit any new and or changed files to the repository. The text after the -m is for you to describe what is included in this commit to the respository.
+
+```bash
+$ git commit -m "Description of what I did"
+```
+
+4. Finally, we need to push these changes up to our remote repository on GitHub. This is a very important step! Without it you are not copying your work back to GitHub and we will not be able to see it if you forget.
+
+```bash
+$ git push remote origin
+```
+
+5. You can repeat these commands as often as you feel the need as your work on your assignment. However, again, you must always make a final push to GitHub when you are finished in order to submit your work. We will make a clone of all of the assignment repositories at the deadline. That implies two things. First, make your final push to GitHub ahead of time and second, any pushes you make after the deadline will not be seen by us.
