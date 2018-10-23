@@ -4,7 +4,7 @@
 
 ### Repository setup:
 
-1. By now you have followed the link to create your assignment repository at https://classroom.github.com/a/rqePP3be. Please use this link once as it will create an repository we will not check for submissions if you use it multiple times. The repository name should lool like **a2-githubusername**. Any others will get removed.
+1. By now you have followed the link to create your assignment repository at https://classroom.github.com/a/rqePP3be. Please use this link once as it will create an repository we will not check for submissions if you use it multiple times. The repository name should look like **a2-githubusername**. Any others will get removed.
 
 2. You should also be sure to share your GitHub username with us via this link if you have not already. https://goo.gl/forms/AKQYcllzjOP4UV6f1
 
@@ -12,7 +12,7 @@
 
 3. Once your repository is created you will have a copy of the assignment template in your github repository. Now you can clone the repository onto your local computer using the following command. Be sure do execute this command from the directory you wish to locate your work.
 
-```bash
+   ```bash
 $ git clone git@github.com:ucla-fa18-cs174a/a2-githubusername.git
 ```
 
@@ -36,12 +36,13 @@ For the sphere instances that have 1 or 2 subdivisions, use flat shading to buil
 
 If you don't want to re-invent the sphere algorithm to make a flat-shaded version, you may use the `make_flat_shaded_version()` function built into our `Shapes`.  To call it on a shape with class name N, wherever N appears simply replace it with the code `( N.prototype.make_flat_shaded_version() )`, including the outer parenthesis.
 
->  **Materials:**  Recall that all Material objects really come from calling a function called material() on any Shader object.  For this project we'll use the provided Phong_Shader for everything, besides extra credit part 2.  What are materials, besides objects that hold a color?  Well, they also store more settings for Phong shading, including numbers found in the Phong Reflection Model like the ambient coefficient, diffuse coefficient, specular coefficient, and shininess exponent.  You can pass all of these values in inside a JavaScript object placed after the Color parameter when you construct a Material, mimicking how our example Material instances do it.  You can assign values to ambient, diffuse, and specular (leave shininess as the default, 40).  These coefficients range from zero to a maximum of one.
+>  **Materials:**  Recall that all Material objects really come from calling a function called `material()` on any `Shader` object.  For this project we'll use the provided `Phong_Shader` for everything, besides extra credit part 2.  What are materials, besides objects that hold a color?  Well, they also store more settings for Phong shading, including numbers found in the Phong Reflection Model like the ambient coefficient, diffuse coefficient, specular coefficient, and shininess exponent.  You can pass all of these values in inside a JavaScript object placed after the `Color` parameter when you construct a `Material`, mimicking how our example `Material` instances do it.  You can assign values to ambient, diffuse, and specular (leave shininess as the default, 40).  These coefficients range from zero to a maximum of one.
 
 Draw the following scene in the `display()` function of `Assignment_Two_Scene`.
 
 
 ![image-0](docs/image-0.gif)
+
 
 ### Graded Steps
 
@@ -69,7 +70,7 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    **Planet 2:**  Swampy green-blue, 3 subdivisions, maximum specular, low diffuse.  Apply Gouraud shading to it every odd second, but regular smooth shading every even second. **- 8 points.**
 
-   >  To Gouraud shade:  Find the code in Phong_Shader that calculates the Phong formula.  It's in a GLSL function called `phong_model_lights()`.  Observe how either the vertex shader or fragment shader programs have the ability to call `phong_model_lights()` to compute the Phong color.  To perform Gouraud shading, make sure the Phong calculation occurs in the vertex shader.  Inside your material object, assigning gouraud:1 will tell it to perform the Phong calculation early enough for that.  Otherwise, to perform smooth shading, leave this flag unset so that the process waits to call phong_model_lights() until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with smooth shading, the fragment shader interpolates normals.
+   >  To Gouraud shade:  Find the code in `Phong_Shader` that calculates the Phong formula.  It's in a GLSL function called `phong_model_lights()`.  Observe how either the vertex shader or fragment shader programs have the ability to call `phong_model_lights()` to compute the Phong color.  To perform Gouraud shading, make sure the Phong calculation occurs in the vertex shader.  Inside your material object, assigning gouraud:1 will tell it to perform the Phong calculation early enough for that.  Otherwise, to perform smooth shading, leave this flag unset so that the process waits to call `phong_model_lights()` until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with smooth shading, the fragment shader interpolates normals.
 
 
    ![image-2](docs/image-2.gif)
@@ -139,15 +140,15 @@ Implement the assignment in clean and understandable code. Each required part mu
 
 ### Submitting Assignment 1 on GitHub:
 
-1. Once you are finished working it is time to 'commit' your work to your remote respository on GitHub. You will also want to do this periodically while you are working to make a backup of your work and to make your final submission. We will keep the process very simple by just 'committing' the master branch of your local repository into the remote repository on GitHub.
+1. Once you are finished working it is time to 'commit' your work to your remote repository on GitHub. You will also want to do this periodically while you are working to make a backup of your work and to make your final submission. We will keep the process very simple by just 'committing' the master branch of your local repository into the remote repository on GitHub.
 
-2. The first step is to add any new files into the respository so they can be tracked.
+2. The first step is to add any new files into the repository so they can be tracked.
 
    ```bash
 $ git add *
 ```
 
-3. Then we commit any new and or changed files to the repository. The text after the -m is for you to describe what is included in this commit to the respository.
+3. Then we commit any new and or changed files to the repository. The text after the -m is for you to describe what is included in this commit to the repository.
 
    ```bash
 $ git commit -m "Description of what I did"
