@@ -40,6 +40,7 @@ If you don't want to re-invent the sphere algorithm to make a flat-shaded versio
 
 Draw the following scene in the `display()` function of `Assignment_Two_Scene`.
 
+
 ![image-0](docs/image-0.gif)
 
 ### Graded Steps
@@ -62,21 +63,29 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    **Planet 1:**  Icy-gray, 2 subdivisions, flat shaded, diffuse only. **- 5 points.**
 
+
    ![image-1](docs/image-1.gif)
+
 
    **Planet 2:**  Swampy green-blue, 3 subdivisions, maximum specular, low diffuse.  Apply Gouraud shading to it every odd second, but regular smooth shading every even second. **- 8 points.**
 
->     To Gouraud shade:  Find the code in Phong_Shader that calculates the Phong formula.  It's in a GLSL function called `phong_model_lights()`.  Observe how either the vertex shader or fragment shader programs have the ability to call `phong_model_lights()` to compute the Phong color.  To perform Gouraud shading, make sure the Phong calculation occurs in the vertex shader.  Inside your material object, assigning gouraud:1 will tell it to perform the Phong calculation early enough for that.  Otherwise, to perform smooth shading, leave this flag unset so that the process waits to call phong_model_lights() until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with smooth shading, the fragment shader interpolates normals.
+>  To Gouraud shade:  Find the code in Phong_Shader that calculates the Phong formula.  It's in a GLSL function called `phong_model_lights()`.  Observe how either the vertex shader or fragment shader programs have the ability to call `phong_model_lights()` to compute the Phong color.  To perform Gouraud shading, make sure the Phong calculation occurs in the vertex shader.  Inside your material object, assigning gouraud:1 will tell it to perform the Phong calculation early enough for that.  Otherwise, to perform smooth shading, leave this flag unset so that the process waits to call phong_model_lights() until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with smooth shading, the fragment shader interpolates normals.
+
 
    ![image-2](docs/image-2.gif)
 
+
    **Planet 3:**  Muddy brown-orange, 4 subdivisions, maximum diffuse and specular.  The planet must wobble on in its rotation over time (have an axis not the same as the orbit axis).  The planet must have a ring.  You can use the provided torus shape, scaled flatter (reduced z axis scale).  The ring and planet must wobble together - so base the ring's matrix directly on the planet's matrix.  Give the ring the same material as the planet, unless you make a custom shader for it for extra credit, as described below. **- 5 points.**
+
 
    ![image-3](docs/image-3.gif)
 
+
    **Planet 4:**  Soft light blue, 4 subdivisions, smooth phong, high specular.  Add a moon for this planet.  The moon has 1 subdivision, with flat shading, any material, and a small orbital distance around the planet. **- 5 points.**
 
+
    ![image-4](docs/image-4.gif)
+
 
 5. Camera buttons: To help us grade, we have implemented some buttons.  They are visible on your program, but they do not work at first. These buttons are intended to attach the camera to each planet, one at a time, fixed upon the front of the planet for closer viewing.
 
@@ -86,13 +95,15 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    Now you must call `this.attached()` to assign to the camera matrix.  Only do the following when the value of `this.attached` is not undefined (so, when a button has already been pressed).  Somewhere in `display()`, compute the `desired` camera matrix (let's call that "desired") by calling `this.attached()`, translating the returned value by 5 units to back away from the planet (we don't want to be inside of it), and then inverting that matrix (because it's going to be used for a camera, not a shape).  Assign that resulting value of `desired` into the variable `graphics_state.camera_transform` **- 10 points.**
 
+
    ![image-5](docs/image-5.gif)
+
 
 #### Extra Credit: Each can be attempted individually. There is no partial credit on any individual extra credit.
 
 1. This is a slight modification to what you'll do for the last sentence you just read in part 5.  This will smooth out camera transitions more and give you slightly more control while attached. Instead of directly assigning desired to `graphics_state.camera_transform`, blend it with the existing camera matrix (from the previous frame) so that we smoothly pull the camera towards equaling `desired` instead of immediately getting there.  To mix two matrices, you can use `desired.map( (x,i) => Vec.from( graphics_state.camera_transform[i] ).mix( x, blending_factor ) )` where .1 would make a good blending factor. **- 2 points.**
 
->   NOTE: At a blending speed of .1, you will still have some leeway to control the camera while attached (especially mouse steering), although it will tend to pull you back to viewing the selected planet.  As you press the buttons, see if you can notice any undesired effects of blending matrices this way to generate intermediate camera matrices -- a subtle problem can be seen because our code snippet above uses linear blending instead of quaternions.
+   >  NOTE: At a blending speed of .1, you will still have some leeway to control the camera while attached (especially mouse steering), although it will tend to pull you back to viewing the selected planet.  As you press the buttons, see if you can notice any undesired effects of blending matrices this way to generate intermediate camera matrices -- a subtle problem can be seen because our code snippet above uses linear blending instead of quaternions.
 
 2. Give your planet 3's ring a custom shader, drawing repeated faded bands on it like Saturn.  All you have to do is make sure it calculates color brightnesses in a way that varies sinusoidally with distance from the planet's center. **- 7 points.**
 
@@ -106,7 +117,9 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    The ring color need not be affected by lights (the sun's size), since it is using a simple shader that is not aware of lights.
 
+
    ![image-6](docs/image-6.gif)
+
 
 3. The purpose of this part is to show how you can benefit from more automation when describing the points in a shape.  That allows you to build bigger shapes with smoother surfaces.  For this, we have added a little extra code to your project for generating Surfaces of Revolution.  You can learn about those on Wikipedia and Google Image Search.
 
@@ -120,7 +133,9 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    With the right modification, make code like what's in the `Torus` class to spin a half circle around the origin instead, sweeping it around the Z axis to make a sphere (make sure you also move the half circle close enough to touch the Z axis).  Draw planet 5 using this closed grid-based sphere. **- 6 points.**
 
+
    ![image-7](docs/image-7.gif)
+   
 
 ### Submitting Assignment 1 on GitHub:
 
