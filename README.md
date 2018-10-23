@@ -90,29 +90,29 @@ I.   Instead of directly assigning desired to `graphics_state.camera_transform`,
 
 II.  Give your planet 3's ring a custom shader, drawing repeated faded bands on it like Saturn.  All you have to do is make sure it calculates color brightnesses in a way that varies sinusoidally with distance from the planet's center. **- 7 points.**
 
-     The `Ring_Shader` class already partially implements such a custom shader.  It works with any `Shape` that has a positions field, and ignores all other fields.  Draw with this shader by using one of its materials (it generates blank ones, which is ok).  When used, it already passes in for the GPU to use the following values:  The shape positions, the model transform matrix, and the product of the projection and camera matrices.  These values are available in the shader's GLSL code.
+The `Ring_Shader` class already partially implements such a custom shader.  It works with any `Shape` that has a positions field, and ignores all other fields.  Draw with this shader by using one of its materials (it generates blank ones, which is ok).  When used, it already passes in for the GPU to use the following values:  The shape positions, the model transform matrix, and the product of the projection and camera matrices.  These values are available in the shader's GLSL code.
 
-     Your task is to use those available variables to fill in the GLSL shader code (the JavaScript template strings returned by `vertex_glsl_code()` and `fragment_glsl_code()`).  Specifically, the `void main()` is blank for both the vertex and fragment shader programs; fill these in to cause the GPU to store within the special GPU address called `gl_Position` the correct final resting place of the vertex, and store into `gl_FragColor` the correct final color.
+Your task is to use those available variables to fill in the GLSL shader code (the JavaScript template strings returned by `vertex_glsl_code()` and `fragment_glsl_code()`).  Specifically, the `void main()` is blank for both the vertex and fragment shader programs; fill these in to cause the GPU to store within the special GPU address called `gl_Position` the correct final resting place of the vertex, and store into `gl_FragColor` the correct final color.
 
-     For testing, you can try storing simple placeholder values into those special variables -- such as the original model space position value, converted from a `vec3` to a `vec4` like this: `vec4( object_space_pos, 1)`.
+For testing, you can try storing simple placeholder values into those special variables -- such as the original model space position value, converted from a `vec3` to a `vec4` like this: `vec4( object_space_pos, 1)`.
 
-     To color the ring use the color of planet 3, multiplied by some sinusoidal scalar function of your distance calculation, so that the color fades over distance from the center.  Use the GLSL `distance()` function to compute distance.  Both position and center are variables that you should calculate and store within the vertex shader; because we declared them as varying, they will be passed on to the fragment shader and available there.
+To color the ring use the color of planet 3, multiplied by some sinusoidal scalar function of your distance calculation, so that the color fades over distance from the center.  Use the GLSL `distance()` function to compute distance.  Both position and center are variables that you should calculate and store within the vertex shader; because we declared them as varying, they will be passed on to the fragment shader and available there.
 
-     The ring color need not be affected by lights (the sun's size), since it is using a simple shader that is not aware of lights.
+The ring color need not be affected by lights (the sun's size), since it is using a simple shader that is not aware of lights.
 
-     ![image-6](docs/image-6.gif)
+![image-6](docs/image-6.gif)
 
 III. Create a fifth planet farthest from the sun.  Make it light gray with full specular and diffuse.  Instead of using subdivisions to make this sphere, modify the given `Torus` class to instead make a sphere, one that has a different layout from a subdivision sphere.  Instead of being made of evenly sized triangles, yours will have latitude and longitude lines (a grid).  To make a sphere out of a grid, use a similar technique as the `Torus` -- copy the code of `Torus` class and make your own variation of it.
 
-     The `Torus` class makes a donut shape out of a triangulated grid of squares, with rows and columns.  Its code starts with an array of points describing a circle that's offset sideways from the origin.  Using those circle points for the grid's rows, it sweeps the whole circle around the origin to make the closed donut shape, with each point along the sweep being a different column of the grid.
+The `Torus` class makes a donut shape out of a triangulated grid of squares, with rows and columns.  Its code starts with an array of points describing a circle that's offset sideways from the origin.  Using those circle points for the grid's rows, it sweeps the whole circle around the origin to make the closed donut shape, with each point along the sweep being a different column of the grid.
 
-     The tiny class `Surface_Of_Revolution` is for taking any curve or closed polygon and sweeping it around the Z axis to generate a surface of revolution (see the Wikipedia article about those).  It uses the assistance of the small `Grid_Patch` class we added to your template as well, and it's a more general shape building tool that allows operations that distort sheets of rows and columns.
+The tiny class `Surface_Of_Revolution` is for taking any curve or closed polygon and sweeping it around the Z axis to generate a surface of revolution (see the Wikipedia article about those).  It uses the assistance of the small `Grid_Patch` class we added to your template as well, and it's a more general shape building tool that allows operations that distort sheets of rows and columns.
 
-     Use the `insert_transformed_copy_into()` method of `Surface_Of_Revolution` to automatically insert a revolution surface shape into your shape's arrays.  Pass in the desired grid rows and columns and your (semi-)circle array, just as class Torus did, and they will be used to construct the `Surface_Of_Revolution`.
+Use the `insert_transformed_copy_into()` method of `Surface_Of_Revolution` to automatically insert a revolution surface shape into your shape's arrays.  Pass in the desired grid rows and columns and your (semi-)circle array, just as class Torus did, and they will be used to construct the `Surface_Of_Revolution`.
 
-     With the right modification, make code like what's in the `Torus` class to spin a half circle around the origin instead, sweeping it around the Z axis to make a sphere (make sure you also move the half circle close enough to touch the Z axis).  Draw planet 5 using this closed grid-based sphere. **- 6 points.**
+With the right modification, make code like what's in the `Torus` class to spin a half circle around the origin instead, sweeping it around the Z axis to make a sphere (make sure you also move the half circle close enough to touch the Z axis).  Draw planet 5 using this closed grid-based sphere. **- 6 points.**
 
-     ![image-7](docs/image-7.gif)
+![image-7](docs/image-7.gif)
 
 ### Submitting Assignment 1 on GitHub:
 
