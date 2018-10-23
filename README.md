@@ -2,7 +2,7 @@
 
 ## Due: November 4, 2018 at 11:59pm
 
-**Requirements:** Up to 50 points of credit plus 15 points extra credit. There is no partial credit on any individual requirement.
+Up to 50 points of credit plus 15 points extra credit. There is no partial credit on any individual requirement.
 
 ### Repository setup:
 
