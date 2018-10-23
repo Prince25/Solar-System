@@ -32,7 +32,7 @@ Instantiate four spheres with each of 1, 2, 3, and 4 for the number of subdivisi
 
 For the sphere instances that have 1 or 2 subdivisions, use flat shading to build them.
 
->  **Flat Shading:** Flat shading is a more restricted way of connecting vertices into triangles.  It allows us to produce sharp, clearly defined edges on shapes.  To do that, flat shading must ensure that the vertices along a sharp edge do not get shared by the triangles on either side of the edge.  When triangles share references to a vertex, it saves storage space, but it also forces both triangles to use the same data at that point; not just position, but also normal vector, texture coordinate, etc.  When we want an abrupt transition across an edge, though, we'd like the single edge to have different normal vectors depending on which triangle we're approaching the edge from.  To get the flat shading effect, we cannot make our triangles share references to the same vertex, but instead must have duplicate vertices where sharp edges are.  The duplicate vertices overlap in position, but with different normal vectors.  That completes the effect.  To flat shade an entire shape, all vertices must be unique, and no triangles can share any vertices.  Exceptions can be made where faces are co-planar but that never happens in our spheres.
+>  **Flat Shading:** In a flat shaded shape, all three corner points of a triangle have identical normal vectors, with all three vectors being exactly perpendicular to the triangle's planar face.  Flat shading means more than just setting normal vectors, though; it also requires us to use a more restricted way of connecting vertices into triangles.  We need to produce sharp, clearly defined edges on shapes.  To do that, the process of flat shading a shape must ensure that the vertices along a sharp edge _do not get shared_ by the triangles on either side of the edge.  When triangles share references to a vertex, it saves storage space, but it also forces both triangles to use the same data at that point; not just position, but also normal vector, texture coordinate, etc.  When we want an abrupt transition across an edge, though, we'd like the single edge to have different normal vectors depending on which triangle we're approaching the edge from.  To get the flat shading effect, we cannot make our triangles share references to the same vertex, but instead must have duplicate vertices where sharp edges are.  The duplicate vertices overlap in position, but with different normal vectors.  That completes the effect.  To flat shade an entire shape, all vertices must be unique, and no triangles can share any vertices.  Exceptions can be made where faces are co-planar but that never happens in our spheres.
 
 If you don't want to re-invent the sphere algorithm to make a flat-shaded version, you may use the `make_flat_shaded_version()` function built into our `Shapes`.  To call it on a shape with class name N, wherever N appears simply replace it with the code `( N.prototype.make_flat_shaded_version() )`, including the outer parenthesis.
 
@@ -69,7 +69,7 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    **Planet 2:**  Swampy green-blue, 3 subdivisions, maximum specular, low diffuse.  Apply Gouraud shading to it every odd second, but regular smooth shading every even second. **- 8 points.**
 
->  To Gouraud shade:  Find the code in Phong_Shader that calculates the Phong formula.  It's in a GLSL function called `phong_model_lights()`.  Observe how either the vertex shader or fragment shader programs have the ability to call `phong_model_lights()` to compute the Phong color.  To perform Gouraud shading, make sure the Phong calculation occurs in the vertex shader.  Inside your material object, assigning gouraud:1 will tell it to perform the Phong calculation early enough for that.  Otherwise, to perform smooth shading, leave this flag unset so that the process waits to call phong_model_lights() until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with smooth shading, the fragment shader interpolates normals.
+   >  To Gouraud shade:  Find the code in Phong_Shader that calculates the Phong formula.  It's in a GLSL function called `phong_model_lights()`.  Observe how either the vertex shader or fragment shader programs have the ability to call `phong_model_lights()` to compute the Phong color.  To perform Gouraud shading, make sure the Phong calculation occurs in the vertex shader.  Inside your material object, assigning gouraud:1 will tell it to perform the Phong calculation early enough for that.  Otherwise, to perform smooth shading, leave this flag unset so that the process waits to call phong_model_lights() until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with smooth shading, the fragment shader interpolates normals.
 
 
    ![image-2](docs/image-2.gif)
@@ -135,7 +135,7 @@ Implement the assignment in clean and understandable code. Each required part mu
 
 
    ![image-7](docs/image-7.gif)
-   
+
 
 ### Submitting Assignment 1 on GitHub:
 
@@ -143,19 +143,19 @@ Implement the assignment in clean and understandable code. Each required part mu
 
 2. The first step is to add any new files into the respository so they can be tracked.
 
-```bash
+   ```bash
 $ git add *
 ```
 
 3. Then we commit any new and or changed files to the repository. The text after the -m is for you to describe what is included in this commit to the respository.
 
-```bash
+   ```bash
 $ git commit -m "Description of what I did"
 ```
 
 4. Finally, we need to push these changes up to our remote repository on GitHub. This is a very important step! Without it you are not copying your work back to GitHub and we will not be able to see it if you forget.
 
-```bash
+   ```bash
 $ git push remote origin
 ```
 
