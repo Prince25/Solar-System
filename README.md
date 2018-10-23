@@ -26,11 +26,11 @@ Items in your code for you to fill in are marked `TODO`.  You shouldn't need to 
 
 Fill in the constructor of `Assignment_Two_Scene` to instantiate the shapes and materials that you will need, as follows.
 
-Use our provided initial camera matrix that looks diagonally down at the scene, far back enough to see it.
+Use our provided initial camera matrix that looks diagonally down at the scene, far back enough to see the entire scene.
 
 Instantiate four spheres with each of 1, 2, 3, and 4 for the number of subdivisions.  You may take advantage of previously given code for spheres.
 
-For the sphere instances that have 1 or 2 subdivisions, use flat shading to build them.  If you don't want to re-invent the sphere algorithm to make a flat-shaded version, you may use the `make_flat_shaded_version()` function built into our `Shapes`.  To call it on a shape with class name N, wherever N appears simply replace it with the code ( `N.prototype.make_flat_shaded_version()` ) including the outer parenthesis.
+For the sphere instances that have 1 or 2 subdivisions, use flat shading to build them.  If you don't want to re-invent the sphere algorithm to make a flat-shaded version, you may use the `make_flat_shaded_version()` function built into our `Shapes`.  To call it on a shape with class name N, wherever N appears simply replace it with the code `( N.prototype.make_flat_shaded_version() )`, including the outer parenthesis.
 
 Draw the following scene in the `display()` function of `Assignment_Two_Scene`.
 
@@ -52,7 +52,7 @@ Implement the assignment in clean and understandable code. Each required part mu
 
 3. Place four orbiting planets.  Their radii shall all be 1.  The smallest orbit shall be 5 units away from the sun and each orbit after shall be 3 units farther, with each farther planet revolving at a slightly slower rate.  Leave the ambient lighting of each planet the default value of zero. **- 5 points.**
 
-   Planet descriptions, from the inside out:
+4. Planet descriptions, from the inside out:
 
    **Planet 1:**  Icy-gray, 2 subdivisions, flat shaded, diffuse only. **- 5 points.**
 
@@ -72,13 +72,13 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    ![image-4](docs/image-4.gif)
 
-(d) Camera buttons: (10 points) To help us grade, we have implemented some buttons.  They are visible on your program, but they do not work at first.  These buttons are intended to attach the camera to each planet, one at a time, fixed upon the front of the planet for closer viewing.
+5. Camera buttons: To help us grade, we have implemented some buttons.  They are visible on your program, but they do not work at first. These buttons are intended to attach the camera to each planet, one at a time, fixed upon the front of the planet for closer viewing.
 
-In order for these buttons to start working, your display() function must assign new values to your camera matrix.  Your display() function must also fill in the following class-scope variables with the correct planet's model matrix: "this.planet_1" "this.planet_2" "this.planet_3" "this.planet_4" "this.moon" and (extra credit) "planet5".
+   In order for these buttons to start working, your `display()` function must assign new values to your camera matrix.  Your `display()` function must also fill in the following class-scope variables with the correct planet's model matrix: "this.planet_1" "this.planet_2" "this.planet_3" "this.planet_4" "this.moon" and, possibly, extra credit "planet5" (see below).
 
-Once you have those, the buttons will now set the function this.attached() to return the matrix of the planet we want.  This is like storing a pointer to the planet's matrix that will always be up-to-date with new values of it.  In JavaScript when we want a long-term pointer to a variable we often use a function returning a variable (a "closure") instead.
+   Once you have those, the buttons will now set the function `this.attached()` to return the matrix of the planet we want.  This is like storing a pointer to the planet's matrix that will always be up-to-date with new values of it.  In JavaScript when we want a long-term pointer to a variable we often use a function returning a variable (a closure) instead.
 
-Now you must call this.attached() to assign to the camera matrix.  Only do the following when the value of this.attached is not undefined (so, when a button has already been pressed).  Somewhere in display, compute the desired camera matrix (let's call that "desired") by calling this.attached(), translating the returned value by 5 units to back away from the planet (we don't want to be inside of it), and then inverting that matrix (because it's going to be used for a camera, not a shape).  Assign that resulting value of desired into the variable graphics_state.camera_transform.
+   Now you must call `this.attached()` to assign to the camera matrix.  Only do the following when the value of `this.attached` is not undefined (so, when a button has already been pressed).  Somewhere in `display()`, compute the desired camera matrix (let's call that "desired") by calling `this.attached()`, translating the returned value by 5 units to back away from the planet (we don't want to be inside of it), and then inverting that matrix (because it's going to be used for a camera, not a shape).  Assign that resulting value of desired into the variable `graphics_state.camera_transform` **- 10 points.**
 
 ![image-5](docs/image-5.gif)
 
