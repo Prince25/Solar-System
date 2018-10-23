@@ -28,9 +28,15 @@ Fill in the constructor of `Assignment_Two_Scene` to instantiate the shapes and 
 
 Use our provided initial camera matrix that looks diagonally down at the scene, far back enough to see the entire scene.
 
-Instantiate four spheres with each of 1, 2, 3, and 4 for the number of subdivisions.  You may take advantage of previously given code for spheres.
+Instantiate four spheres with each of 1, 2, 3, and 4 for the number of subdivisions. You may take advantage of previously given code for spheres.
 
-For the sphere instances that have 1 or 2 subdivisions, use flat shading to build them.  If you don't want to re-invent the sphere algorithm to make a flat-shaded version, you may use the `make_flat_shaded_version()` function built into our `Shapes`.  To call it on a shape with class name N, wherever N appears simply replace it with the code `( N.prototype.make_flat_shaded_version() )`, including the outer parenthesis.
+For the sphere instances that have 1 or 2 subdivisions, use flat shading to build them.
+
+  **Flat Shading:** Flat shading is a more restricted way of connecting vertices into triangles.  It allows us to produce sharp, clearly defined edges on shapes.  To do that, flat shading must ensure that the vertices along a sharp edge do not get shared by the triangles on either side of the edge.  When triangles share references to a vertex, it saves storage space, but it also forces both triangles to use the same data at that point; not just position, but also normal vector, texture coordinate, etc.  When we want an abrupt transition across an edge, though, we'd like the single edge to have different normal vectors depending on which triangle we're approaching the edge from.  To get the flat shading effect, we cannot make our triangles share references to the same vertex, but instead must have duplicate vertices where sharp edges are.  The duplicate vertices overlap in position, but with different normal vectors.  That completes the effect.  To flat shade an entire shape, all vertices must be unique, and no triangles can share any vertices.  Exceptions can be made where faces are co-planar but that never happens in our spheres.
+
+If you don't want to re-invent the sphere algorithm to make a flat-shaded version, you may use the `make_flat_shaded_version()` function built into our `Shapes`.  To call it on a shape with class name N, wherever N appears simply replace it with the code `( N.prototype.make_flat_shaded_version() )`, including the outer parenthesis.
+
+  **Materials:**  Recall that all Material objects really come from calling a function called material() on any Shader object.  For this project we'll use the provided Phong_Shader for everything, besides extra credit part 2.  What are materials, besides objects that hold a color?  Well, they also store more settings for Phong shading, including numbers found in the Phong Reflection Model like the ambient coefficient, diffuse coefficient, specular coefficient, and shininess exponent.  You can pass all of these values in inside a JavaScript object placed after the Color parameter when you construct a Material, mimicking how our example Material instances do it.  You can assign values to ambient, diffuse, and specular (leave shininess as the default, 40).  These coefficients range from zero to a maximum of one.
 
 Draw the following scene in the `display()` function of `Assignment_Two_Scene`.
 
@@ -50,9 +56,9 @@ Implement the assignment in clean and understandable code. Each required part mu
 
 2. Make a point light source located in the center of the sun, matching the current color of the sun ball, with a size parameter equal to 10**n where n is the current sun radius.  In JavaScript, ** is the exponent operator.  Since the light's size is changing and not the brightness, you should see the outer planets darken more than the inner ones whenever the sun shrinks. **- 7 points.**
 
-3. Place four orbiting planets.  Their radii shall all be 1.  The smallest orbit shall be 5 units away from the sun and each orbit after shall be 3 units farther, with each farther planet revolving at a slightly slower rate.  Leave the ambient lighting of each planet the default value of zero. **- 5 points.**
+3. Place four orbiting planets.  Their radii shall all be 1.  The smallest orbit shall be 5 units away from the sun and each orbit after shall be 3 units farther, with each farther planet revolving at a slightly slower rate than the previous.  Leave the ambient lighting of each planet the default value of zero. **- 5 points.**
 
-4. Planet descriptions, from the inside out:
+4. Planet descriptions, from the innermost to the outermost:
 
    **Planet 1:**  Icy-gray, 2 subdivisions, flat shaded, diffuse only. **- 5 points.**
 
@@ -74,17 +80,17 @@ Implement the assignment in clean and understandable code. Each required part mu
 
 5. Camera buttons: To help us grade, we have implemented some buttons.  They are visible on your program, but they do not work at first. These buttons are intended to attach the camera to each planet, one at a time, fixed upon the front of the planet for closer viewing.
 
-   In order for these buttons to start working, your `display()` function must assign new values to your camera matrix.  Your `display()` function must also fill in the following class-scope variables with the correct planet's model matrix: "this.planet_1" "this.planet_2" "this.planet_3" "this.planet_4" "this.moon" and, possibly, extra credit "planet5" (see below).
+   In order for these buttons to start working, your `display()` function must assign new values to your camera matrix.  Your `display()` function must also fill in the following class-scope variables with the correct planet's model matrix: `"this.planet_1"` `"this.planet_2"` `"this.planet_3"` `"this.planet_4"` `"this.moon"` and, possibly, extra credit `"this.planet_5"` (see below).
 
    Once you have those, the buttons will now set the function `this.attached()` to return the matrix of the planet we want.  This is like storing a pointer to the planet's matrix that will always be up-to-date with new values of it.  In JavaScript when we want a long-term pointer to a variable we often use a function returning a variable (a closure) instead.
 
-   Now you must call `this.attached()` to assign to the camera matrix.  Only do the following when the value of `this.attached` is not undefined (so, when a button has already been pressed).  Somewhere in `display()`, compute the desired camera matrix (let's call that "desired") by calling `this.attached()`, translating the returned value by 5 units to back away from the planet (we don't want to be inside of it), and then inverting that matrix (because it's going to be used for a camera, not a shape).  Assign that resulting value of desired into the variable `graphics_state.camera_transform` **- 10 points.**
+   Now you must call `this.attached()` to assign to the camera matrix.  Only do the following when the value of `this.attached` is not undefined (so, when a button has already been pressed).  Somewhere in `display()`, compute the `desired` camera matrix (let's call that "desired") by calling `this.attached()`, translating the returned value by 5 units to back away from the planet (we don't want to be inside of it), and then inverting that matrix (because it's going to be used for a camera, not a shape).  Assign that resulting value of `desired` into the variable `graphics_state.camera_transform` **- 10 points.**
 
    ![image-5](docs/image-5.gif)
 
 #### Extra Credit: Each can be attempted individually. There is no partial credit on any individual extra credit.
 
-1. Instead of directly assigning desired to `graphics_state.camera_transform`, blend it with the existing camera matrix (from the previous frame) so that we smoothly pull the camera towards equaling desired instead of immediately getting there.  To mix two matrices, you can use `desired.map( (x,i) => Vec.from( graphics_state.camera_transform[i] ).mix( x, blending_factor ) )` where .1 would make a good blending factor. **- 2 points.**
+1. This is a slight modification to what you'll do for the last sentence you just read in part 5.  This will smooth out camera transitions more and give you slightly more control while attached. Instead of directly assigning desired to `graphics_state.camera_transform`, blend it with the existing camera matrix (from the previous frame) so that we smoothly pull the camera towards equaling `desired` instead of immediately getting there.  To mix two matrices, you can use `desired.map( (x,i) => Vec.from( graphics_state.camera_transform[i] ).mix( x, blending_factor ) )` where .1 would make a good blending factor. **- 2 points.**
 
    NOTE: At a blending speed of .1, you will still have some leeway to control the camera while attached (especially mouse steering), although it will tend to pull you back to viewing the selected planet.  As you press the buttons, see if you can notice any undesired effects of blending matrices this way to generate intermediate camera matrices -- a subtle problem can be seen because our code snippet above uses linear blending instead of quaternions.
 
@@ -102,7 +108,9 @@ Implement the assignment in clean and understandable code. Each required part mu
 
    ![image-6](docs/image-6.gif)
 
-3. Create a fifth planet farthest from the sun.  Make it light gray with full specular and diffuse.  Instead of using subdivisions to make this sphere, modify the given `Torus` class to instead make a sphere, one that has a different layout from a subdivision sphere.  Instead of being made of evenly sized triangles, yours will have latitude and longitude lines (a grid).  To make a sphere out of a grid, use a similar technique as the `Torus` -- copy the code of `Torus` class and make your own variation of it.
+3. The purpose of this part is to show how you can benefit from more automation when describing the points in a shape.  That allows you to build bigger shapes with smoother surfaces.  For this, we have added a little extra code to your project for generating Surfaces of Revolution.  You can learn about those on Wikipedia and Google Image Search.
+
+   Create a fifth planet farthest from the sun.  Make it light gray with full specular and diffuse.  Instead of using subdivisions to make this sphere, modify the given `Torus` class to instead make a sphere, one that has a different layout from a subdivision sphere.  Instead of being made of evenly sized triangles, yours will have latitude and longitude lines (a grid).  To make a sphere out of a grid, use a similar technique as the `Torus` -- copy the code of `Torus` class and make your own variation of it.
 
    The `Torus` class makes a donut shape out of a triangulated grid of squares, with rows and columns.  Its code starts with an array of points describing a circle that's offset sideways from the origin.  Using those circle points for the grid's rows, it sweeps the whole circle around the origin to make the closed donut shape, with each point along the sweep being a different column of the grid.
 
