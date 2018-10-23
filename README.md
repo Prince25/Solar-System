@@ -22,45 +22,45 @@ $ git clone git@github.com:ucla-fa18-cs174a/a2-githubusername.git
 
 ### Gettting Started:
 
-When you open your project, you will see a blank Assignment_Two_Scene that draws a single Torus shape (donut).  Replace this scene with the solar system we specify in detail below.
+When you open your project, you will see a blank `Assignment_Two_Scene` that draws a single Torus shape (donut).  Replace this scene with the solar system we specify in detail below.
 
-Items in your code for you to fill in are marked TODO.  You shouldn't need to edit outside of there, or any file besides main-scene.js.
+Items in your code for you to fill in are marked `TODO`.  You shouldn't need to edit outside of there, or any file besides `main-scene.js`.
 
-1.  Fill in the constructor of Assignment_Two_Scene to instantiate the shapes and materials that you will need, as follows.
+1.  Fill in the constructor of `Assignment_Two_Scene` to instantiate the shapes and materials that you will need, as follows.
 
 Use our provided initial camera matrix that looks diagonally down at the scene, far back enough to see it.
 
 Instantiate four spheres with each of 1, 2, 3, and 4 for the number of subdivisions.  You may take advantage of previously given code for spheres.
 
-For the sphere instances that have 1 or 2 subdivisions, use flat shading to build them.  If you don't want to re-invent the sphere algorithm to make a flat-shaded version, you may use the make_flat_shaded_version() function built into our Shapes.  To call it on a shape with class name N, wherever N appears simply replace it with the code ( N.prototype.make_flat_shaded_version() ) including the outer parenthesis.
+For the sphere instances that have 1 or 2 subdivisions, use flat shading to build them.  If you don't want to re-invent the sphere algorithm to make a flat-shaded version, you may use the `make_flat_shaded_version()` function built into our `Shapes`.  To call it on a shape with class name N, wherever N appears simply replace it with the code ( `N.prototype.make_flat_shaded_version()` ) including the outer parenthesis.
 
-2.  Draw the following scene in the display() function of Assignment_Two_Scene.
+2.  Draw the following scene in the `display()` function of `Assignment_Two_Scene`.
 
 ![image-0](docs/image-0.gif)
 
-(a) Place a spherical sun at the origin.  Use a sphere that is subdivided 4 times.  Use maximum ambient in the material.  It swells from radius 1 up to 3 over a 5 second period, and fades from blue when it's smallest to red when it's biggest.  (5 points)
+(a) Place a spherical sun at the origin.  Use a sphere that is subdivided 4 times.  Use maximum ambient in the material.  It swells from radius 1 up to 3 over a 5 second period, and fades from blue when it's smallest to red when it's biggest. *- 5 points.*
 
-(b) Make a point light source located in the center of the sun, matching the current color of the sun ball, with a size parameter equal to 10**n where n is the current sun radius.  In JavaScript, ** is the exponent operator.  Since the light's size is changing and not the brightness, you should see the outer planets darken more than the inner ones whenever the sun shrinks. (7 points)
+(b) Make a point light source located in the center of the sun, matching the current color of the sun ball, with a size parameter equal to 10**n where n is the current sun radius.  In JavaScript, ** is the exponent operator.  Since the light's size is changing and not the brightness, you should see the outer planets darken more than the inner ones whenever the sun shrinks. *- 7 points.*
 
-(c) Place four orbiting planets.  Their radii shall all be 1.  The smallest orbit shall be 5 units away from the sun and each orbit after shall be 3 units farther, with each farther planet revolving at a slightly slower rate.  Leave the ambient lighting of each planet the default value of zero. (5 points)
+(c) Place four orbiting planets.  Their radii shall all be 1.  The smallest orbit shall be 5 units away from the sun and each orbit after shall be 3 units farther, with each farther planet revolving at a slightly slower rate.  Leave the ambient lighting of each planet the default value of zero. *- 5 points.*
 
 Planet descriptions, from the inside out:
 
-Planet 1:  Icy-gray, 2 subdivisions, flat shaded, diffuse only. (5 points)
+Planet 1:  Icy-gray, 2 subdivisions, flat shaded, diffuse only. *- 5 points.*
 
 ![image-1](docs/image-1.gif)
 
-Planet 2:  Swampy green-blue, 3 subidivisons, maximum specular, low diffuse.  Apply Gouraud shading to it every odd second, but regular smooth shading every even second. (8 points)
+Planet 2:  Swampy green-blue, 3 subidivisons, maximum specular, low diffuse.  Apply Gouraud shading to it every odd second, but regular smooth shading every even second. *- 8 points.*
 
 To Gouraud shade:  Find the code in Phong_Shader that calculates the Phong formula.  It's in a GLSL function called phong_model_lights().  Observe how either the vertex shader or fragment shader programs have the ability to call phong_model_lights() to compute the Phong color.  To perform Gouraud shading, make sure the Phong calculation occurs in the vertex shader.  Inside your material object, assigning gouraud:1 will tell it to perform the Phong calculation early enough for that.  Otherwise, to perform smooth shading, leave this flag unset so that the process waits to call phong_model_lights() until the fragment shader.  Remember that with Gouraud shading, the fragment shader interpolates colors; with smooth shading, the fragment shader interpolates normals.
 
 ![image-2](docs/image-2.gif)
 
-Planet 3:  Muddy brown-orange, 4 subdivisions, maximum diffuse and specular.  The planet must wobble on in its rotation over time (have an axis not the same as the orbit axis).  The planet must have a ring.  You can use the provided torus shape, scaled flatter (reduced z axis scale).  The ring and planet must wobble together - so base the ring's matrix directly on the planet's matrix.  Give the ring the same material as the planet, unless you make a custom shader for it for extra credit, as described below. (5 points)
+Planet 3:  Muddy brown-orange, 4 subdivisions, maximum diffuse and specular.  The planet must wobble on in its rotation over time (have an axis not the same as the orbit axis).  The planet must have a ring.  You can use the provided torus shape, scaled flatter (reduced z axis scale).  The ring and planet must wobble together - so base the ring's matrix directly on the planet's matrix.  Give the ring the same material as the planet, unless you make a custom shader for it for extra credit, as described below. *- 5 points.*
 
 ![image-3](docs/image-3.gif)
 
-Planet 4:  Soft light blue, 4 subdivisions, smooth phong, high specular.  Add a moon for this planet.  The moon has 1 subdivision, with flat shading, any material, and a small orbital distance around the planet. (5 points)
+Planet 4:  Soft light blue, 4 subdivisions, smooth phong, high specular.  Add a moon for this planet.  The moon has 1 subdivision, with flat shading, any material, and a small orbital distance around the planet. *- 5 points.*
 
 ![image-4](docs/image-4.gif)
 
@@ -76,13 +76,13 @@ Now you must call this.attached() to assign to the camera matrix.  Only do the f
 
 Extra Credit Part I
 
-Instead of directly assigning desired to graphics_state.camera_transform, blend it with the existing camera matrix (from the previous frame) so that we smoothly pull the camera towards equaling desired instead of immediately getting there.  To mix two matrices, you can use desired.map( (x,i) => Vec.from( graphics_state.camera_transform[i] ).mix( x, blending_factor ) ) where .1 would make a good blending factor.  (2 points)
+Instead of directly assigning desired to graphics_state.camera_transform, blend it with the existing camera matrix (from the previous frame) so that we smoothly pull the camera towards equaling desired instead of immediately getting there.  To mix two matrices, you can use desired.map( (x,i) => Vec.from( graphics_state.camera_transform[i] ).mix( x, blending_factor ) ) where .1 would make a good blending factor. *- 2 points.*
 
 At a blending speed of .1, you will still have some leeway to control the camera while attached (especially mouse steering), although it will tend to pull you back to viewing the selected planet.  As you press the buttons, see if you can notice any undesired effects of blending matrices this way to generate intermediate camera matrices -- a subtle problem can be seen because our code snippet above uses linear blending instead of quaternions.
 
 Extra Credit Part II
 
-Give your planet 3's ring a custom shader, drawing repeated faded bands on it like Saturn.  All you have to do is make sure it calculates color brightnesses in a way that varies sinusoidally with distance from the planet's center. (7 points)
+Give your planet 3's ring a custom shader, drawing repeated faded bands on it like Saturn.  All you have to do is make sure it calculates color brightnesses in a way that varies sinusoidally with distance from the planet's center. *- 7 points.*
 
 The Ring_Shader class already partially implements such a custom shader.  It works with any Shape that has a positions field, and ignores all other fields.  Draw with this shader by using one of its materials (it generates blank ones, which is ok).  When used, it already passes in for the GPU to use the following values:  The shape positions, the model transform matrix, and the product of the projection and camera matrices.  These values are available in the shader's GLSL code.
 
@@ -106,6 +106,6 @@ The tiny class Surface_Of_Revolution is for taking any curve or closed polygon a
 
 Use the insert_transformed_copy_into() method of Surface_Of_Revolution to automatically insert a revolution surface shape into your shape's arrays.  Pass in the desired grid rows and columns and your (semi-)circle array, just as class Torus did, and they will be used to construct the Surface_Of_Revolution.
 
-With the right modification, make code like what's in the Torus class to spin a half circle around the origin instead, sweeping it around the Z axis to make a sphere (make sure you also move the half circle close enough to touch the Z axis).  Draw planet 5 using this closed grid-based sphere. (6 points)
+With the right modification, make code like what's in the Torus class to spin a half circle around the origin instead, sweeping it around the Z axis to make a sphere (make sure you also move the half circle close enough to touch the Z axis).  Draw planet 5 using this closed grid-based sphere. *- 6 points.*
 
 ![image-7](docs/image-7.gif)
