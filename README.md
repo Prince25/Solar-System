@@ -38,7 +38,7 @@ Draw the following scene in the `display()` function of `Assignment_Two_Scene`.
 
 ### Graded Steps
 
-#### Up to 50 points of credit plus 15 points extra credit. There is no partial credit on any individual requirement.
+#### Up to 50 points of credit plus 15 points extra credit. There is no partial credit on any individual requirement. Late assignments are penalized 25% per day.
 
 Implement the assignment in clean and understandable code. Each required part must successfully draw and show up onscreen in order to count.
 
