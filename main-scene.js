@@ -20,9 +20,10 @@ class Assignment_Two_Test extends Scene_Component
                          sphere1: new ( Subdivision_Sphere.prototype.make_flat_shaded_version() )(1),
                          sphere2: new ( Subdivision_Sphere.prototype.make_flat_shaded_version() )(2),
                          sphere3: new Subdivision_Sphere(3),
-                         sphere4: new Subdivision_Sphere(4)
-
+                         sphere4: new Subdivision_Sphere(4),
+                         gridSphere: new ( Grid_Sphere.prototype.make_flat_shaded_version() ) (10, 10)
                        }
+                       
         this.submit_shapes( context, shapes );
                                      
                                      // Make some Material objects available to you:
@@ -77,7 +78,6 @@ class Assignment_Two_Test extends Scene_Component
         graphics_state.lights = sunLight
 
 
-
         // Setup Planet 1
         let planet1 = sunOrigin.times(Mat4.rotation(1.25 * t, Vec.of(0, 1, 0)))  // Rotote about the origin
                          .times(Mat4.translation([5,0,0]))                      // Model transform translate to +5 units on the x axis
@@ -106,7 +106,7 @@ class Assignment_Two_Test extends Scene_Component
         let planet3Rings = planet3.times(Mat4.scale([1, 1, 0.1]))             // Scale rings down on the z axis
 
         this.shapes.sphere4.draw(graphics_state, planet3, this.materials.planet.override( {color: Color.of(0.65, 0.4, 0.05, 1), specularity: 1, diffusivity: 1} ))
-        this.shapes.torus.draw(graphics_state, planet3Rings, this.materials.planet.override( {color: Color.of(0.65, 0.4, 0.05, 1), specularity: 1, diffusivity: 1} ))
+        this.shapes.torus.draw(graphics_state, planet3Rings, this.materials.ring)
 
 
         // Setup Planet 4
@@ -126,11 +126,13 @@ class Assignment_Two_Test extends Scene_Component
 
         // Setup Planet 5
         let planet5 = sunOrigin.times(Mat4.rotation(0.25 * t, Vec.of(0, 1, 0))) 
-                               .times(Mat4.translation([15,0,0]))      
+                               .times(Mat4.translation([17,0,0]))      
                                .times(Mat4.rotation(0.25 * t, Vec.of(0, 1, 0)))  
                                .times(Mat4.scale([1, 1, 1])) 
+        this.shapes.gridSphere.draw(graphics_state, planet5, this.materials.planet.override( {color: Color.of(0.9, 0.9, 0.9, 1), specularity: 1, diffusivity: 1} ))
+
         
-        
+
         // Setup Camera Positions
         this.initial_camera_location = Mat4.look_at( Vec.of( 0,10,20 ), Vec.of( 0,0,0 ), Vec.of( 0,1,0 ) ).map( (x,i) => Vec.from( graphics_state.camera_transform[i] ).mix( x, 0.1 ) )
         this.planet_1 = Mat4.inverse(planet1.times(Mat4.translation([0,0,5]))).map( (x,i) => Vec.from( graphics_state.camera_transform[i] ).mix( x, 0.1 ) )
@@ -215,21 +217,38 @@ class Ring_Shader extends Shader              // Subclasses of Shader each store
 
         void main()
         { 
+          gl_Position = projection_camera_transform * model_transform * vec4(object_space_pos, 1.0);
+          position = vec4(object_space_pos, 1.0);
+          center = vec4(0.0, 0.0, 0.0, 1.0);
         }`;           // TODO:  Complete the main function of the vertex shader (Extra Credit Part II).
     }
   fragment_glsl_code()           // ********* FRAGMENT SHADER *********
     { return `
         void main()
         { 
-        }`;           // TODO:  Complete the main function of the fragment shader (Extra Credit Part II).
+          if (distance(position, center) <= 2.5)
+          {
+            if (sin(28.0 * distance(position, center)) > -0.4)
+              gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+            else
+              gl_FragColor = vec4(0.65, 0.4, 0.05, 1.0);   
+          }        
+        }`;           // TODO:  Complete the main function of the fragment shader (Extra Credit Part II). 1.4- 2.6
     }
 }
+
+
 
 window.Grid_Sphere = window.classes.Grid_Sphere =
 class Grid_Sphere extends Shape           // With lattitude / longitude divisions; this means singularities are at 
   { constructor( rows, columns, texture_range )             // the mesh's top and bottom.  Subdivision_Sphere is a better alternative.
       { super( "positions", "normals", "texture_coords" );
         
+      const circle_points = Array( rows ).fill( Vec.of( 0,0,1 ) )
+                                           .map( (p,i,a) => Mat4.translation([ 0,0,0 ])
+                                                    .times( Mat4.rotation( i/(a.length-1) * Math.PI, Vec.of( 1,0,0 ) ) )
+                                                    .times( p.to4(1) ).to3() );
+      Surface_Of_Revolution.insert_transformed_copy_into( this, [ rows, columns, circle_points ] );       
 
                       // TODO:  Complete the specification of a sphere with lattitude and longitude lines
                       //        (Extra Credit Part III)
